@@ -1,0 +1,56 @@
+{
+  "name": "lux-engine",
+  "version": "0.2.0",
+  "description": "LUX: Proof-Driven Development for TypeScript. Formal specifications, property testing, Dafny mathematical proofs, and Semgrep security auditing.",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "src/",
+    "benchmarks/",
+    "lux-zero-friction.ts",
+    "lux-proof-extension.ts",
+    "README.md",
+    "LICENSE",
+    "docs/"
+  ],
+  "scripts": {
+    "test": "npx vitest run",
+    "test:watch": "npx vitest",
+    "bench": "npx tsx benchmarks/runner.ts",
+    "lint": "npx tsc --noEmit",
+    "typecheck": "npx tsc --noEmit --strict src/proof/type-level-proofs.ts",
+    "prove": "npx tsx src/proof/dafny-bridge.ts",
+    "audit": "npx tsx src/proof/semgrep-audit.ts",
+    "specs": "npx tsx src/proof/spec-registry.ts",
+    "verify-api": "npx tsx src/proof/verify-api.ts"
+  },
+  "keywords": [
+    "proof-driven-development",
+    "formal-verification",
+    "type-level-proofs",
+    "curry-howard",
+    "typescript",
+    "dafny",
+    "semgrep",
+    "property-based-testing",
+    "specification",
+    "code-quality",
+    "ai-coding-agent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chidionyema/lux"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.0.0",
+    "vitest": "^2.0.0",
+    "@types/node": "^22.0.0"
+  },
+  "dependencies": {
+    "surrealdb": "^1.0.0",
+    "@lux/popdd": "file:../popdd-ts"
+  }
+}

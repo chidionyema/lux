@@ -1,0 +1,11 @@
+node_modules/
+dist/
+benchmarks/results/
+*.tsbuildinfo
+.DS_Store
+CREDENTIALS.local.md
+.env
+setup.sh
+lux-proof-extension.ts
+lux-code-review.ts
+lux-zero-friction.ts
