@@ -12,31 +12,24 @@ Usage:
 
 import subprocess
 import sys
-import os
 from pathlib import Path
 
 # Add the popdd-py package to the path so we can import it.
 # The script lives at lux/scripts/, so ../../popdd-py points at the sibling package.
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "popdd-py"))
 
-from popdd import HmacSigner, ReceiptChain  # noqa: E402
+from popdd_agent import PopddAgent  # noqa: E402
 
 
 def main():
-    # Setup signer and chain
-    key_path = Path(".lux/keys/agent.pem")
-    receipts_dir = Path(".lux/receipts")
-    key_path.parent.mkdir(parents=True, exist_ok=True)
-    receipts_dir.mkdir(parents=True, exist_ok=True)
-
-    signer = HmacSigner(HmacSigner.load_or_create_key(key_path))
-    chain = ReceiptChain(signer, agent_id="lux-pipeline")
+    ROOT = Path(__file__).parent.parent
+    agent = PopddAgent.at_path(ROOT)
 
     # Step 1: pre-test receipt
-    chain.append(
+    agent.sign_generic(
         action="test-run:start",
         target="lux:test-suite",
-        proof={"verdict": "STARTED", "command": "npx vitest run"},
+        **{"verdict": "STARTED", "command": "npx vitest run"},
     )
 
     # Step 2: run the test suite
@@ -65,10 +58,10 @@ def main():
     verdict = "PASS" if result.returncode == 0 and failed == 0 else "FAIL"
 
     # Step 3: post-test receipt
-    chain.append(
+    agent.sign_generic(
         action="test-run:complete",
         target="lux:test-suite",
-        proof={
+        **{
             "verdict": verdict,
             "passed": passed,
             "failed": failed,
@@ -77,22 +70,19 @@ def main():
     )
 
     # Step 4: verify the chain
-    verify_result = chain.verify()
+    verify = agent.verify_chain()
 
-    # Step 5: persist
-    chain_path = receipts_dir / f"lux-test-{os.getpid()}.jsonl"
-    chain.save(chain_path)
+    # (auto-saved by PopddAgent)
 
     print(f"\n{'=' * 60}")
     print(f"  LUX POPDD Run Complete")
     print(f"{'=' * 60}")
     print(f"  Test verdict:  {verdict} ({passed} passed, {failed} failed)")
-    print(f"  Chain valid:   {verify_result.valid}")
-    print(f"  Chain path:    {chain_path}")
-    print(f"  Verifier ID:   {chain.verifier_id}")
+    print(f"  Chain valid:   {verify['valid']}")
+    print(f"  Verifier ID:   {agent.verifier_id}")
     print(f"{'=' * 60}\n")
 
-    sys.exit(0 if verify_result.valid and verdict == "PASS" else 1)
+    sys.exit(0 if verify['valid'] and verdict == "PASS" else 1)
 
 
 if __name__ == "__main__":
