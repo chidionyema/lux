@@ -9,3 +9,14 @@ setup.sh
 lux-proof-extension.ts
 lux-code-review.ts
 lux-zero-friction.ts
+
+# POPDD local artifacts (per-machine)
+.lux/keys/
+.lux/receipts/
+.lux/spec-registry.json
+.lux/test-receipts/
+
+# Generated
+__pycache__/
+*.egg-info/
+.npmignore
