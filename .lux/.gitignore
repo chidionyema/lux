@@ -1,0 +1,5 @@
+# LUX local state — per-environment, never commit
+.lux/keys/
+.lux/receipts/
+.lux/spec-registry.json
+.lux/test-receipts/

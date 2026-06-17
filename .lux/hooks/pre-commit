@@ -1,0 +1,26 @@
+#!/bin/sh
+# lux PDD pre-commit hook
+# Run this before every commit to ensure all modified functions have valid specs.
+# Add to .git/hooks/pre-commit as:
+#   ln -sf ../../.lux/hooks/pre-commit .git/hooks/pre-commit
+
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+echo "🔍 LUX PDD Pre-Commit Check"
+echo "=========================="
+
+# Run the spec guard on modified functions
+npx tsx src/cli.ts check 2>&1
+result=$?
+
+if [ $result -ne 0 ]; then
+  echo ""
+  echo "❌ PDD gate BLOCKED this commit."
+  echo "   Create or update specs for the modified functions before committing."
+  echo "   Run: lux spec create <name>"
+  echo "   Then: lux spec verify <name>"
+  exit 1
+fi
+
+echo "✅ PDD gate passed — all specs valid."
+exit 0

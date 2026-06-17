@@ -1,0 +1,15 @@
+{
+  "functionName": "getUserFriendlyErrorMessage",
+  "preconditions": [
+    { "name": "any_input", "check": "true" }
+  ],
+  "postconditions": [
+    { "name": "returns_string", "check": "typeof output === 'string' && output.length > 0" },
+    { "name": "string_passthrough", "check": "typeof input === 'string' ? output === input : true" }
+  ],
+  "edgeCases": [
+    { "name": "string_error", "input": "Connection failed", "expected": "Connection failed" },
+    { "name": "null_input", "input": null, "expected": "An unexpected error occurred. Please try again." },
+    { "name": "number_input", "input": 404, "expected": "An unexpected error occurred. Please try again." }
+  ]
+}

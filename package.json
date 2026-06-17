@@ -23,7 +23,8 @@
     "prove": "npx tsx src/proof/dafny-bridge.ts",
     "audit": "npx tsx src/proof/semgrep-audit.ts",
     "specs": "npx tsx src/proof/spec-registry.ts",
-    "verify-api": "npx tsx src/proof/verify-api.ts"
+    "verify-api": "npx tsx src/proof/verify-api.ts",
+    "lux": "npx tsx src/cli.ts"
   },
   "keywords": [
     "proof-driven-development",
