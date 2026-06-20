@@ -52,6 +52,6 @@
   },
   "dependencies": {
     "surrealdb": "^1.0.0",
-    "@lux/popdd": "file:../popdd-ts"
+    "popdd": "file:../popdd-ts"
   }
 }
